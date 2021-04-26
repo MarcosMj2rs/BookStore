@@ -13,5 +13,7 @@
 		public string Genre { get; set; }
 
 		public decimal  Price { get; set; }
+
+		public int CatalogueId { get; set; }
 	}
 }

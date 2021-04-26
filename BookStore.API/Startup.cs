@@ -27,19 +27,23 @@ namespace BookStore.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore.API", Version = "v1" });
 			});
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder => builder.AllowAnyMethod()
+									  .AllowAnyHeader()
+									  //.AllowAnyOrigin()
+									  .AllowCredentials());
+			});
+
 			services.AddRepository();
 			services.AddControllers();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			//if(env.IsDevelopment())
-			//{
-			//	app.UseDeveloperExceptionPage();
-			//	app.UseSwagger();
-			//	app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore.API v1"));
-			//}
 			if(env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -48,7 +52,7 @@ namespace BookStore.API
 				app.UseSwagger();
 				app.UseSwaggerUI(c =>
 				{
-					c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1");
+					c.SwaggerEndpoint("v1/swagger.json", "API Catálogo - Livros V1");
 				});
 			}
 
@@ -63,6 +67,8 @@ namespace BookStore.API
 			{
 				endpoints.MapControllers();
 			});
+
+			app.UseCors("CorsPolicy");
 		}
 	}
 }

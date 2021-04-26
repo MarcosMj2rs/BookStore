@@ -25,7 +25,7 @@ namespace BookStore.API.Controllers
 			return await _unitOfWork.Books.GetAll();
 		}
 
-		[HttpGet("{Genre}")]
+		[HttpGet("Genre")]
 		public IEnumerable<Book> GetByGenre([FromQuery] string Genre)
 		{
 			return _unitOfWork.Books.GetBooksByGenre(Genre);
@@ -42,25 +42,27 @@ namespace BookStore.API.Controllers
 		[HttpPost]
 		public IActionResult Post()
 		{
-			var book = new Book
-			{
-				Id = 1,
-				Genre = "Technology",
-				Author = "Charles Petzold",
-				Title = "Programming Windows 5th Edition",
-				Price = 30,
-				Publish = "Microsoft Press"
-			};
-
 			var Catalog = new Catalogue
 			{
-				CatalogueId = 1,
-				Name = "Programming Books",
-				Description = "Books on Software development"
+				CatalogueId = 2,
+				Name = "Diversos",
+				Description = "Administração e carreiras e assuntos de interesse comuns"
+
 			};
 
-			_unitOfWork.Books.Add(book);
+			var book = new Book
+			{
+				Id = 3,
+				Genre = "Administração",
+				Author = "Sun Tzu",
+				Title = "A arte da guerra: Os treze capítulos completos",
+				Price = 17.40M,
+				Publish = "Jardim dos Livros",
+				CatalogueId = Catalog.CatalogueId
+			};
+
 			_unitOfWork.Catalogues.Add(Catalog);
+			_unitOfWork.Books.Add(book);
 			_unitOfWork.Complete();
 			return Ok();
 		}
